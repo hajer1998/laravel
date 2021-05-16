@@ -8,7 +8,6 @@ use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use MongoDB\BSON\ObjectId;
-use PhpParser\Node\Expr\Cast\Object_;
 
 
 class PostRepository
@@ -83,6 +82,7 @@ class PostRepository
                 'post_id' => $id,
                 'user_id' => $userId
             ]);
+            return $post;
         }
 
     public function dislike ($id, String $userId)
@@ -95,18 +95,11 @@ class PostRepository
         $like = $post->likes()
             ->where('user_id', $userId)
             ->first();
-
-        if ($like != null){
-            $post->is_liked= \DB::table('likes')
-                ->where('user_id', $userId)
-                ->where('post_id', (string) $post->_id)
-                ->exists();
-
-            if($post->is_liked) {
-                return $like->delete();
-            }
+        if($post->is_liked) {
+            return $like->delete();
         }
     }
+
 
     public function listingPosts(string $userId){
         $posts = Post::all();
