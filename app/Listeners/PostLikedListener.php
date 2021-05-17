@@ -18,10 +18,10 @@ class PostLikedListener
     public function __construct()
     {
         $connection = new AMQPStreamConnection(
-            env('RABBITMQ_HOST'),
-            env('RABBITMQ_PORT'),
-            env('RABBITMQ_USER'),
-            env('RABBITMQ_PASSWORD')
+            '172.18.0.1',
+            5672,
+            'guest',
+            'guest'
         );
         $this->channel = $connection->channel();
     }
