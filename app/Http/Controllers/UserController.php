@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -59,9 +60,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             // Validation failed
-            return response()->json([
-                'message' => $validator->messages(),
-            ]);
+            throw new \Exception('Validation failed');
         } else {
             // Fetch User
             $user = User::where('email',$request->email)->first();
