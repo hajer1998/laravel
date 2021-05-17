@@ -33,6 +33,9 @@ Route::get('/user/{id}', [\App\Http\Controllers\UserController::class, 'get']);
 Route::get('/post/{id}', [\App\Http\Controllers\PostController::class, 'get'])->middleware('auth');
 //like post
 Route::post('/post/like/{id}', [\App\Http\Controllers\PostController::class, 'like'])->middleware('auth');
+//unlike post
+Route::post('/post/unlike/{id}', [\App\Http\Controllers\PostController::class, 'unlike'])->middleware('auth');
+
 //delete post
 Route::delete('/post/{id}', [\App\Http\Controllers\PostController::class, 'delete'])->middleware('auth');
 //create post

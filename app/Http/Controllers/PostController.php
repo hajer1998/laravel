@@ -3,8 +3,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostLiked;
+use App\Models\User;
 use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PostController
 {
@@ -29,7 +32,7 @@ class PostController
                 $request->get('user_id')
             );
         } catch (\Throwable $exception) {
-            exit('post not created');
+            throw new \Exception('post not created');
         }
 
         return response()->json($post->toArray());
@@ -43,10 +46,11 @@ class PostController
         try {
             $post = $this->repository->editPost($id, $request->get('body'));
         } catch (\Throwable $exception) {
-            exit ('post was not updated');
+            return \response()->json([
+                'success' => false,
+                'message' => 'Post not found'
+            ], 404);
         }
-
-        return response()->json($post->toArray());
     }
 
 
@@ -58,7 +62,10 @@ class PostController
         try {
             $this->repository->deletePost($id);
         } catch (\Throwable $exception) {
-            exit ('post was not deleted');
+            return \response()->json([
+                'success' => false,
+                'message' => 'Post not found'
+            ], 404);
         }
 
         return response(null, 204);
@@ -67,11 +74,33 @@ class PostController
     public function like($id, Request $request)
     {
         try {
-            $data = $this->repository->markLike($id, $request->get('user_id'));
-            return response($data, 204);
+            $post = $this->repository->markLike(
+                $id,
+                $request->get('user_id')
+            );
+//            if ($post->user_id != $request->get('user_id')) {
+                PostLiked::dispatch(
+                    $id,
+                    User::firstWhere('_id', $request->get('user_id'))->name,
+                    $request->get('user_id'),
+                    $post->user_id
+                );
+//            }
+            return response(null, 204);
         } catch (\Throwable $exception){
-            exit('like not marked');
+            return response()->json('post not liked', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function unlike($id, Request $request)
+    {
+        try {
+            $like = $this->repository->dislike($id, $request->get('user_id'));
+        } catch (\Throwable $exception){
+            throw new \Exception('unlike not marked');
+        }
+
+        return response(null,204);
     }
 
     /**

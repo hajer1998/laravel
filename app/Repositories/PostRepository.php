@@ -8,7 +8,6 @@ use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use MongoDB\BSON\ObjectId;
-use PhpParser\Node\Expr\Cast\Object_;
 
 
 class PostRepository
@@ -45,7 +44,7 @@ class PostRepository
     {
         $post = Post::firstWhere('_id',$id);
         if (!$post){
-            exit ('post not found');
+            throw new \Exception('post not found');
         }
 
         $post->body = $body;
@@ -65,28 +64,42 @@ class PostRepository
         $post = Post::firstWhere('_id',$id);
 
         if (!$post){
-            exit ('post not found');
+            throw new \Exception('post not found');
         }
 
         return $post->delete();
     }
 
-    public function markLike ($id, $userId)
+    public function markLike ($id, String $userId)
     {
-
-        {
             $post = Post::firstWhere('_id', $id);
 
             if (!$post) {
-                exit ('post not found');
+                throw new \Exception('post not found');
             }
 
             Like::create([
                 'post_id' => $id,
                 'user_id' => $userId
             ]);
+            return $post;
+        }
+
+    public function dislike ($id, String $userId)
+    {
+        $post = Post::firstWhere('_id',$id);
+
+        if (!$post){
+            throw new \Exception('post not found');
+        }
+        $like = $post->likes()
+            ->where('user_id', $userId)
+            ->first();
+        if($post->is_liked) {
+            return $like->delete();
         }
     }
+
 
     public function listingPosts(string $userId){
         $posts = Post::all();
@@ -96,6 +109,7 @@ class PostRepository
             $post->is_liked= \DB::table('likes')->where('user_id', $userId)
                 ->where('post_id', (string) $post->_id)
                 ->exists();
+            $post->is_owner = $post->user_id == $userId;
             return $post;
         });
         return $posts;

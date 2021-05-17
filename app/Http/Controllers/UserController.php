@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -41,7 +42,7 @@ class UserController extends Controller
         );
 
         $token = $this->repository->createToken((string) $user->_id);
-        return response()->json(['token' => $token]);
+        return response()->json(['data' => $token]);
     }
 
 
@@ -59,9 +60,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             // Validation failed
-            return response()->json([
-                'message' => $validator->messages(),
-            ]);
+            throw new \Exception('Validation failed');
         } else {
             // Fetch User
             $user = User::where('email',$request->email)->first();
@@ -72,7 +71,7 @@ class UserController extends Controller
                     if(!empty($token)){
                         $token = $this->repository->updateToken((string) $user->_id);
                         return response()->json([
-                            'token' => $token->token
+                            'data' => $token->toArray()
                         ]);
                     } else {
                         return response()->json([

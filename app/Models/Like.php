@@ -9,7 +9,7 @@ use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Like extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $collection = 'likes';
 
