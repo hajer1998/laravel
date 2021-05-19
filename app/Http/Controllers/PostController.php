@@ -95,7 +95,7 @@ class PostController
     public function unlike($id, Request $request)
     {
         try {
-            $like = $this->repository->dislike($id, $request->get('user_id'));
+            $this->repository->dislike($id, $request->get('user_id'));
         } catch (\Throwable $exception){
             throw new \Exception('unlike not marked');
         }
