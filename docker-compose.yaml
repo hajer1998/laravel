@@ -2,8 +2,7 @@
 version: '3.3'
 services:
     admin:
-      build:
-        context: .
+      image: internship-docker-image
       command: bash -c "php artisan serve --host 0.0.0.0 | php artisan rabbitmq:consume"
       volumes:
       - .:/app
