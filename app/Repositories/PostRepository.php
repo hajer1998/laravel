@@ -102,7 +102,7 @@ class PostRepository
 
 
     public function listingPosts(string $userId){
-        $posts = Post::all();
+        $posts = Post::query()->orderBy('_id', 'DESC')->get();
         $posts->transform(function ($post, $key) use ($userId){
             $post->likes_count = $post->likes()->count();
             $post->user = User::firstWhere('_id', new ObjectId($post->user_id));

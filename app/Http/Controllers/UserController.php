@@ -76,17 +76,17 @@ class UserController extends Controller
                     } else {
                         return response()->json([
                             'message' => 'User is not registered',
-                        ]);
+                        ], Response::HTTP_NOT_FOUND);
                     }
                 } else {
                     return response()->json([
                         'message' => 'Invalid Password',
-                    ]);
+                    ], Response::HTTP_BAD_REQUEST);
                 }
             } else {
                 return response()->json([
                     'message' => 'User not found',
-                ]);
+                ], Response::HTTP_NOT_FOUND);
             }
         }
     }
