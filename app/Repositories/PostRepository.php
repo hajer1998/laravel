@@ -92,17 +92,15 @@ class PostRepository
         if (!$post){
             throw new \Exception('post not found');
         }
-        $like = $post->likes()
+        $post->likes()
+            ->where('post_id', $id)
             ->where('user_id', $userId)
-            ->first();
-        if($post->is_liked) {
-            return $like->delete();
-        }
+            ->delete();
     }
 
 
     public function listingPosts(string $userId){
-        $posts = Post::all();
+        $posts = Post::query()->orderBy('_id', 'DESC')->get();
         $posts->transform(function ($post, $key) use ($userId){
             $post->likes_count = $post->likes()->count();
             $post->user = User::firstWhere('_id', new ObjectId($post->user_id));
