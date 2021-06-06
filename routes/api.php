@@ -44,3 +44,16 @@ Route::post('/post', [\App\Http\Controllers\PostController::class, 'create'])->m
 Route::get('/post/', [\App\Http\Controllers\PostController::class, 'listing'])->middleware('auth');
 //Edit Post
 Route::put('/post/{id}', [\App\Http\Controllers\PostController::class, 'edit'])->middleware('auth');
+
+
+
+
+/**
+ * Profile Management
+ */
+//User profile
+Route::get('/user/profile/{id}',[\App\Http\Controllers\UserController::class, 'profile'])->middleware('auth');
+//update profile
+Route::put('/user/updateProfile/{id}', [\App\Http\Controllers\UserController::class, 'updateInfo'])->middleware('auth');
+//upload profile picture
+Route::put('/updateProfilePicture/{id}', [\App\Http\Controllers\UserController::class, 'upload'])->middleware('auth');

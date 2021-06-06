@@ -110,5 +110,39 @@ class UserController extends Controller
     }
 
 
+    public function updateInfo ($id, Request $request){
+        try {
+            $user = $this->repository->updateUser($id,$request->get('name'), $request->get('email'), $request->get('password'));
+        } catch (\Throwable $exception) {
+            return \response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+    }
+
+    public function upload($id,Request $request)
+    {
+        try {
+            $this->repository->uploadPic($id, $request->get('imageLink'));
+        }catch (\Throwable $exception) {
+
+            throw new \Exception(' failed to upload');
+        }
+    }
+
+    public function profile (Request $request)
+    {
+        $profile = $this->repository->authProfile($request->get('user_id'));
+        if (empty($profile)){
+            return \response()->json([
+                'response' => "there was an error",
+            ], 404);
+        }
+        return response()->json([
+            'response' => $profile
+        ]);
+
+    }
 }
 
