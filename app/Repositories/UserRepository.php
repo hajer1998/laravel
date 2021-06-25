@@ -57,9 +57,9 @@ class UserRepository
     {
         $key = env('JWT_SECRET');
         $payload = array(
-            "iss" => env('APP_URL'),
-            "aud" => env('APP_URL'),
-            "iat" => time(),
+            "iss" => env('APP_URL'),//issuer( le créateur du token)
+            "aud" => env('APP_URL'),//audience(eli masmouhelhom ychoufou token
+            "iat" => time(),//(issued at)
             "user_id" => $userId
         );
 
@@ -87,7 +87,7 @@ class UserRepository
         return $token;
     }
 
-    public function updateUser($id, $name, $email, $password){
+    public function updateUser($id, $name, $email){
         $user = User::firstWhere('_id',$id);
         if (!$user){
             throw new \Exception('user not found');
@@ -95,7 +95,6 @@ class UserRepository
 
         $user->name = $name;
         $user->email = $email;
-        $user->password = Hash::make($password);
 
         $user->update();
 
@@ -125,31 +124,4 @@ class UserRepository
         return $user;
     }
 }
-//        if($request->hasFile('imageLink')){
-//            $filename = $request->imageLink->getClientOriginalName();
-//            $request->imageLink->storeAs('images',$filename,'public');
-//            Auth()->user()->update(['imageLink'=>$filename]);
-//        }
-//        return redirect()->back();
-//    }
-//        $user = User::find($id);
-//
-//        if($request->imageLink != '') {
-//            $path = request()->file(‘photo’)->store(‘profile’, ‘public’);
-//
-//            //code for remove old file
-//            if ($user->imageLink != '' && $user->imageLink != null) {
-//                $image_old = $path . $user->imageLink;
-//                unlink($image_old);
-//            }
-//
-//            //upload new file
-//            $imageLink = $request->imageLink;
-//            $filename = $imageLink->getClientOriginalName();
-//            $imageLink->move($path, $filename);
-//
-//            //for update in table
-//            $user->update(['file' => $filename]);
-//        }
-//    }
 

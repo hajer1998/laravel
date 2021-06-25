@@ -29,6 +29,7 @@ class PostController
         try {
             $post = $this->repository->create(
                 $request->get('body'),
+                $request->get('imageLink'),
                 $request->get('user_id')
             );
         } catch (\Throwable $exception) {

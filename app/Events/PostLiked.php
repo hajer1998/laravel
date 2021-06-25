@@ -6,6 +6,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class PostLiked
 {
+    //dispatchable envoie les infos
     use Dispatchable;
 
     public $postId;

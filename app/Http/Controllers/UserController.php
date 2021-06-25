@@ -112,7 +112,7 @@ class UserController extends Controller
 
     public function updateInfo ($id, Request $request){
         try {
-            $user = $this->repository->updateUser($id,$request->get('name'), $request->get('email'), $request->get('password'));
+            $user = $this->repository->updateUser($id,$request->get('name'), $request->get('email'));
         } catch (\Throwable $exception) {
             return \response()->json([
                 'success' => false,

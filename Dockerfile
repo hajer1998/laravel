@@ -2,7 +2,7 @@
 FROM php:7.4-cli
 
 WORKDIR /app
-     #first . (source dir from host machine) is this app above ,the second . (destination image) is the working directory ..i will copy all the files here in the docker container
+     #first . (source dir from host machine) is this app ààabove ,the second . (destination image) is the working directory ..i will copy all the files here in the docker container
 COPY . .
     #once i copy all the files i have to run composer install
 RUN apt-get update && \

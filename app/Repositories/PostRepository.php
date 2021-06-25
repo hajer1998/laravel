@@ -23,10 +23,11 @@ class PostRepository
         return $post;
     }
 
-    public function create(string $body, string $user_id)
+    public function create(string $body, string $imageLink,string $user_id)
     {
         return Post::create([
             'body' => $body,
+            'imageLink'=> $imageLink,
             'user_id' => $user_id,
             'deleted_at' => null
         ]);
@@ -112,4 +113,5 @@ class PostRepository
         });
         return $posts;
     }
+
 }

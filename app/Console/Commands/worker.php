@@ -87,6 +87,7 @@ class worker extends Command
                     'status' => $exception->getCode() ?: 500
                 ]);
             }
+            //
             /** @var AMQPChannel $amqpRequest */
             $amqpRequest = $msg->delivery_info['channel'];
             $amqpRequest->basic_publish(new AMQPMessage($response, [

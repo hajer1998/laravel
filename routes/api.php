@@ -46,8 +46,6 @@ Route::get('/post/', [\App\Http\Controllers\PostController::class, 'listing'])->
 Route::put('/post/{id}', [\App\Http\Controllers\PostController::class, 'edit'])->middleware('auth');
 
 
-
-
 /**
  * Profile Management
  */
